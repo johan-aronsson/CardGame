@@ -9,21 +9,39 @@ public class PlayingCardGame {
     public void onePlayerGame () {
         PlayingCardDeck deck = new PlayingCardDeck();
         List<PlayingCard> filledDeck = deck.populateDeck();
-//        int playerSum = 0;
-//        int dealerSum = 0;
+
         Dealer dealer = new Dealer();
         Player player1 = new Player();
         Scanner sc = new Scanner(System.in);
+        boolean stillPlaying = true;
 
-        dealer.setDealersCard(deck.takeCardStartOfDeck(filledDeck));
-        dealer.getDealersCard().setFaceUp(true);
-        player1.setPlayersCard(deck.takeCardStartOfDeck(filledDeck));
+        while (stillPlaying) {
+            dealer.setDealersCard(deck.takeCardStartOfDeck(filledDeck));
+            dealer.getDealersCard().setFaceUp(true);
+            player1.setPlayersCard(deck.takeCardStartOfDeck(filledDeck));
 
-        renderCards(dealer.getDealersCard(), player1.getPlayersCard());
-        int selection = sc.nextInt();
-        player1.getPlayersCard().setFaceUp(true);
-        renderCards(dealer.getDealersCard(), player1.getPlayersCard());
-        checkWin(dealer.getDealersCard(), player1.getPlayersCard(), selection);
+            renderCards(dealer.getDealersCard(), player1.getPlayersCard());
+            int selection = sc.nextInt();
+            player1.getPlayersCard().setFaceUp(true);
+            renderCards(dealer.getDealersCard(), player1.getPlayersCard());
+            checkWin(dealer.getDealersCard(), player1.getPlayersCard(), selection);
+
+            deck.addCardEndOfDeck(filledDeck, dealer.getDealersCard());
+            deck.addCardEndOfDeck(filledDeck, player1.getPlayersCard());
+
+            System.out.println("Spela igen? JA (1) NEJ (2)");
+            selection = sc.nextInt();
+            if (selection == 1) {
+                stillPlaying = true;
+            } else {
+                stillPlaying = false;
+            }
+        }
+
+        renderMenu();
+
+
+
 
 
 
@@ -231,7 +249,7 @@ public class PlayingCardGame {
     //Menu functions
 
     public void renderMenu () {
-
+        System.out.println("--HUVUDMENY--");
         System.out.println("1. Spela ett parti");
         System.out.println("2. Visa spelregler");
         System.out.println("3. Visa statistik");
@@ -275,8 +293,12 @@ public class PlayingCardGame {
     }
 
     public void showRules() {
-        System.out.println("Rules bla bla bla");
-        System.out.println("bla bla bla bal");
+        System.out.println("--Regler--");
+        System.out.println("Spelet går ut på att gissa om det kort som du fått tilldelat");
+        System.out.println("är högre eller lägre än dealerns kort.");
+        System.out.println();
+        System.out.println("Följande suit ranking tillämpas:");
+        System.out.println("Spader (♠) > Hjärter (♥) > Ruter (♦) > Klöver (♣)");
         System.out.println();
         System.out.println("Skriv 1 och ENTER för att återgå till huvudmenyn");
         Scanner sc = new Scanner(System.in);
