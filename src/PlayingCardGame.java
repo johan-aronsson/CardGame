@@ -1,8 +1,234 @@
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class PlayingCardGame {
+
+
+
+    public void onePlayerGame () {
+        PlayingCardDeck deck = new PlayingCardDeck();
+        List<PlayingCard> filledDeck = deck.populateDeck();
+//        int playerSum = 0;
+//        int dealerSum = 0;
+        Dealer dealer = new Dealer();
+        Player player1 = new Player();
+        Scanner sc = new Scanner(System.in);
+
+        dealer.setDealersCard(deck.takeCardStartOfDeck(filledDeck));
+        dealer.getDealersCard().setFaceUp(true);
+        player1.setPlayersCard(deck.takeCardStartOfDeck(filledDeck));
+
+        renderCards(dealer.getDealersCard(), player1.getPlayersCard());
+        int selection = sc.nextInt();
+        player1.getPlayersCard().setFaceUp(true);
+        renderCards(dealer.getDealersCard(), player1.getPlayersCard());
+        checkWin(dealer.getDealersCard(), player1.getPlayersCard(), selection);
+
+
+
+
+
+    }
+
+    public void checkWin (PlayingCard dealerCard, PlayingCard playerCard, int selection) {
+        int dealerCardValue = checkValue(dealerCard);
+        int dealerCardSuitRank = checkSuitRank(dealerCard);
+        int playerCardValue = checkValue(playerCard);
+        int playerCardSuitRank = checkSuitRank(playerCard);
+
+        if (dealerCardValue < playerCardValue) {
+            if (selection == 1) {
+                System.out.println("Spelare vinner");
+            } else {
+                System.out.println("Spelare förlorar");
+            }
+        } else if (dealerCardValue > playerCardValue) {
+            if (selection == 1) {
+                System.out.println("Spelare förlorar");
+            } else {
+                System.out.println("Spelare vinner");
+            }
+        } else {
+            if (dealerCardSuitRank < playerCardSuitRank) {
+                if (selection == 1) {
+                    System.out.println("Spelare vinner");
+                } else {
+                    System.out.println("Spelare förlorar");
+                }
+            } else {
+                if (selection == 1) {
+                    System.out.println("Spelare förlorar");
+                } else {
+                    System.out.println("Spelare vinner");
+                }
+            }
+        }
+    }
+
+    public void renderCards(PlayingCard dealerCard, PlayingCard playerCard) {
+        if (!playerCard.isFaceUp()) {
+            System.out.println("Dealers kort:");
+            System.out.println(dealerCard.getCardSuit()+" "+dealerCard.getCardValue());
+            System.out.println();
+            System.out.println("Spelares kort:");
+            System.out.println("KORT DOLT");
+            System.out.println();
+            System.out.println("Är ditt kort högre (1) eller lägre (2)?");
+        } else {
+            System.out.println("Spelares kort:");
+            System.out.println(playerCard.getCardSuit()+" "+playerCard.getCardValue());
+        }
+    }
+
+
+    public void twoPlayerGame () {
+//        PlayingCardDeck deck = new PlayingCardDeck();
+//        List<PlayingCard> filledDeck = deck.populateDeck();
+//        Boolean playing = true;
+//        int playerSum = 0;
+//        int dealerSum = 0;
+//
+//        Dealer dealer = new Dealer();
+//        Player player1 = new Player();
+//        Scanner sc = new Scanner(System.in);
+//
+//        dealer.addCardToDealersHand(deck.takeCardStartOfDeck(filledDeck));
+//        player1.addCardToPlayersHand(deck.takeCardStartOfDeck(filledDeck));
+//
+//        //Player draws cards
+//
+//        while (playing) {
+//            System.out.println("Dealer has:");
+//            for (PlayingCard card : dealer.dealerHand) {
+//                System.out.println(card.getCardSuit()+" "+card.getCardValue());
+//            }
+//            player1.addCardToPlayersHand(deck.takeCardStartOfDeck(filledDeck));
+//            System.out.println();
+//            System.out.println("Player has:");
+//            for (PlayingCard card : player1.playerHand) {
+//                System.out.println(card.getCardSuit()+" "+card.getCardValue());
+//            }
+//
+//            playerSum = checkHand(player1.playerHand);
+//
+//
+//            if (playerSum > 21) {
+//                System.out.println();
+//                System.out.println("Player BUST!");
+//                break;
+//            }
+//            System.out.println();
+//            System.out.println("Choose 1 to draw card.");
+//            System.out.println("Choose 2 to stop.");
+//            int selected = sc.nextInt();
+//            if (selected == 1) {
+//                playing = true;
+//            } else {
+//                playing = false;
+//            }
+//        }
+//
+//// dealer draws cards until 17 and valuates against player hand
+//
+//        while (dealerSum<17 && playerSum <= 21) {
+//            dealerSum = checkHand(dealer.dealerHand);
+//
+//            if (dealerSum <= 17) {
+//                dealer.addCardToDealersHand(deck.takeCardStartOfDeck(filledDeck));
+//                System.out.println("Dealer taking card");
+//                System.out.println();
+//                System.out.println("Dealer has:");
+//                for (PlayingCard card : dealer.dealerHand) {
+//                    System.out.println(card.getCardSuit()+" "+card.getCardValue());
+//                }
+//                System.out.println();
+//            } else if (dealerSum <= 17 && dealerSum <= 21){
+//                playerSum = checkHand(player1.playerHand);
+//                if (playerSum == dealerSum) {
+//                    System.out.println("Draw!");
+//                    break;
+//                } else if (playerSum < dealerSum) {
+//                    System.out.println("Dealer win!");
+//                    break;
+//                } else {
+//                    System.out.println("Player win!");
+//                    break;
+//                }
+//            } else {
+//                System.out.println("Dealer bust!");
+//                System.out.println("Player win!");
+//            }
+//        }
+//
+    }
+
+    public int checkValue(PlayingCard card) {
+        int value = 0;
+            switch (card.getCardValue()) {
+                case ACE:
+                    value = 1;
+                    break;
+                case TWO:
+                    value = 2;
+                    break;
+                case THREE:
+                    value = 3;
+                    break;
+                case FOUR:
+                    value = 4;
+                    break;
+                case FIVE:
+                    value = 5;
+                    break;
+                case SIX:
+                    value = 6;
+                    break;
+                case SEVEN:
+                    value = 7;
+                    break;
+                case EIGHT:
+                    value = 8;
+                    break;
+                case NINE:
+                    value = 9;
+                    break;
+                case TEN:
+                    value = 10;
+                    break;
+                case JACK:
+                    value = 11;
+                    break;
+                case QUEEN:
+                    value = 12;
+                    break;
+                case KING:
+                    value = 13;
+                    break;
+            }
+        return value;
+    }
+
+    public int checkSuitRank (PlayingCard card) {
+        int suitRank = 0;
+        switch (card.getCardSuit()) {
+            case CLUBS:
+                suitRank = 1;
+                break;
+            case DIAMONDS:
+                suitRank = 2;
+                break;
+            case HEARTS:
+                suitRank = 3;
+                break;
+            case SPADES:
+                suitRank = 4;
+                break;
+        }
+        return suitRank;
+    }
+
+    //Menu functions
 
     public void renderMenu () {
 
@@ -31,23 +257,6 @@ public class PlayingCardGame {
         }
     }
 
-    public void onePlayerGame () {
-        PlayingCardDeck deck = new PlayingCardDeck();
-        List<PlayingCard> filledDeck = deck.populateDeck();
-        Collections.shuffle(filledDeck);
-
-        for (PlayingCard card :filledDeck) {
-            System.out.println(card.getCardSuit());
-            System.out.println(card.getCardValue());
-        }
-
-    }
-
-    public void twoPlayerGame () {
-        System.out.println("2 player game");
-
-    }
-
     public void playGameMenu () {
         System.out.println("Välj antal spelare:");
         System.out.println("1. Spelare");
@@ -63,11 +272,6 @@ public class PlayingCardGame {
         } else {
             System.exit(1);
         }
-    }
-
-
-    public void playGame() {
-        System.out.println("Play a game");
     }
 
     public void showRules() {

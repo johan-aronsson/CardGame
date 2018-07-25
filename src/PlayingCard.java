@@ -1,10 +1,8 @@
-import java.util.*;
-
 public class PlayingCard {
 
 
     private Suit cardSuit;
-    private Rank cardValue;
+    private RankDisplay cardValue;
     private boolean faceUp = false;
 
     public static enum Suit {
@@ -14,7 +12,7 @@ public class PlayingCard {
         SPADES;
     }
 
-    public static enum Rank {
+    public static enum RankDisplay {
         TWO,
         THREE,
         FOUR,
@@ -27,14 +25,16 @@ public class PlayingCard {
         JACK,
         QUEEN,
         KING,
-        ACE;
+        ACE
     }
+
+
 
 
 //    String[] suit = {"CLUBS", "DIAMONDS", "HEARTS", "SPADES"};
 //    int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 
-    PlayingCard(Suit cardSuit, Rank cardValue) {
+    PlayingCard(Suit cardSuit, RankDisplay cardValue) {
         setCardSuit(cardSuit);
         setCardValue(cardValue);
     }
@@ -43,11 +43,11 @@ public class PlayingCard {
         this.cardSuit = cardSuit;
     }
 
-    public void setCardValue(Rank cardValue) {
+    public void setCardValue(RankDisplay cardValue) {
         this.cardValue = cardValue;
     }
 
-    public Rank getCardValue() {
+    public RankDisplay getCardValue() {
         return cardValue;
     }
 
@@ -59,6 +59,9 @@ public class PlayingCard {
         this.faceUp = faceUp;
     }
 
+    public boolean isFaceUp() {
+        return faceUp;
+    }
 }
 
 
