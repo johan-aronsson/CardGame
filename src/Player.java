@@ -9,5 +9,4 @@ public class Player {
     public PlayingCard getPlayersCard() {
         return playersCard;
     }
-
 }
