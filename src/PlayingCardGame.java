@@ -7,18 +7,19 @@ import java.util.Scanner;
 
 public class PlayingCardGame {
     File file = new File("highScore.txt");
+    int wins;
+    int losses;
 
     public void loadScore () {
         try {
             Scanner sc = new Scanner(file);
-            int wins = sc.nextInt();
-            System.out.println("Vinster: "+wins);
-            int losses = sc.nextInt();
-            System.out.println("Förluster: "+losses);
+            wins = sc.nextInt();
+            losses = sc.nextInt();
         } catch (FileNotFoundException e) {
             System.out.println("Du har ingen statistik.");
         }
     }
+
 
     public void saveScore (int playerWins, int playerLosses) {
 
@@ -37,7 +38,7 @@ public class PlayingCardGame {
     public void onePlayerGame () {
         PlayingCardDeck deck = new PlayingCardDeck();
         List<PlayingCard> filledDeck = deck.populateDeck();
-
+        loadScore();
         Dealer dealer = new Dealer();
         Player player1 = new Player();
         Scanner sc = new Scanner(System.in);
@@ -83,8 +84,6 @@ public class PlayingCardGame {
         int playerCardValue = checkValue(playerCard);
         int playerCardSuitRank = checkSuitRank(playerCard);
 
-        int wins = 0;
-        int losses = 0;
 
         if (dealerCardValue < playerCardValue) {
             if (selection == 1) {
@@ -271,6 +270,8 @@ public class PlayingCardGame {
     public void showStatistics () {
         System.out.println("--STATISTIK--");
         loadScore();
+        System.out.println("Vinster: "+wins);
+        System.out.println("Förluster: "+losses);
         System.out.println();
         System.out.println("Skriv 1 och ENTER för att återgå till huvudmenyn");
 
