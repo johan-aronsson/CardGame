@@ -1,8 +1,36 @@
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Scanner;
 
 public class PlayingCardGame {
+    File file = new File("highScore.txt");
+
+    public void loadScore () {
+        try {
+            Scanner sc = new Scanner(file);
+            int wins = sc.nextInt();
+            System.out.println("Vinster: "+wins);
+            int losses = sc.nextInt();
+            System.out.println("Förluster: "+losses);
+        } catch (FileNotFoundException e) {
+            System.out.println("Du har ingen statistik.");
+        }
+    }
+
+    public void saveScore (int playerWins, int playerLosses) {
+
+        try {
+            PrintWriter output = new PrintWriter(file);
+            output.println(playerWins);
+            output.println(playerLosses);
+            output.close();
+        } catch (FileNotFoundException e){
+            System.out.println(e);
+        }
+    }
 
 
 
@@ -55,33 +83,45 @@ public class PlayingCardGame {
         int playerCardValue = checkValue(playerCard);
         int playerCardSuitRank = checkSuitRank(playerCard);
 
+        int wins = 0;
+        int losses = 0;
+
         if (dealerCardValue < playerCardValue) {
             if (selection == 1) {
                 System.out.println("Spelare vinner");
+                wins += 1;
             } else {
                 System.out.println("Spelare förlorar");
+                losses += 1;
             }
         } else if (dealerCardValue > playerCardValue) {
             if (selection == 1) {
                 System.out.println("Spelare förlorar");
+                losses += 1;
             } else {
                 System.out.println("Spelare vinner");
+                wins += 1;
             }
         } else {
             if (dealerCardSuitRank < playerCardSuitRank) {
                 if (selection == 1) {
                     System.out.println("Spelare vinner");
+                    wins += 1;
                 } else {
                     System.out.println("Spelare förlorar");
+                    losses += 1;
                 }
             } else {
                 if (selection == 1) {
                     System.out.println("Spelare förlorar");
+                    losses += 1;
                 } else {
                     System.out.println("Spelare vinner");
+                    wins += 1;
                 }
             }
         }
+        saveScore(wins, losses);
     }
 
     public void renderCards(PlayingCard dealerCard, PlayingCard playerCard) {
@@ -97,88 +137,6 @@ public class PlayingCardGame {
             System.out.println("Spelares kort:");
             System.out.println(playerCard.getCardSuit()+" "+playerCard.getCardValue());
         }
-    }
-
-
-    public void twoPlayerGame () {
-//        PlayingCardDeck deck = new PlayingCardDeck();
-//        List<PlayingCard> filledDeck = deck.populateDeck();
-//        Boolean playing = true;
-//        int playerSum = 0;
-//        int dealerSum = 0;
-//
-//        Dealer dealer = new Dealer();
-//        Player player1 = new Player();
-//        Scanner sc = new Scanner(System.in);
-//
-//        dealer.addCardToDealersHand(deck.takeCardStartOfDeck(filledDeck));
-//        player1.addCardToPlayersHand(deck.takeCardStartOfDeck(filledDeck));
-//
-//        //Player draws cards
-//
-//        while (playing) {
-//            System.out.println("Dealer has:");
-//            for (PlayingCard card : dealer.dealerHand) {
-//                System.out.println(card.getCardSuit()+" "+card.getCardValue());
-//            }
-//            player1.addCardToPlayersHand(deck.takeCardStartOfDeck(filledDeck));
-//            System.out.println();
-//            System.out.println("Player has:");
-//            for (PlayingCard card : player1.playerHand) {
-//                System.out.println(card.getCardSuit()+" "+card.getCardValue());
-//            }
-//
-//            playerSum = checkHand(player1.playerHand);
-//
-//
-//            if (playerSum > 21) {
-//                System.out.println();
-//                System.out.println("Player BUST!");
-//                break;
-//            }
-//            System.out.println();
-//            System.out.println("Choose 1 to draw card.");
-//            System.out.println("Choose 2 to stop.");
-//            int selected = sc.nextInt();
-//            if (selected == 1) {
-//                playing = true;
-//            } else {
-//                playing = false;
-//            }
-//        }
-//
-//// dealer draws cards until 17 and valuates against player hand
-//
-//        while (dealerSum<17 && playerSum <= 21) {
-//            dealerSum = checkHand(dealer.dealerHand);
-//
-//            if (dealerSum <= 17) {
-//                dealer.addCardToDealersHand(deck.takeCardStartOfDeck(filledDeck));
-//                System.out.println("Dealer taking card");
-//                System.out.println();
-//                System.out.println("Dealer has:");
-//                for (PlayingCard card : dealer.dealerHand) {
-//                    System.out.println(card.getCardSuit()+" "+card.getCardValue());
-//                }
-//                System.out.println();
-//            } else if (dealerSum <= 17 && dealerSum <= 21){
-//                playerSum = checkHand(player1.playerHand);
-//                if (playerSum == dealerSum) {
-//                    System.out.println("Draw!");
-//                    break;
-//                } else if (playerSum < dealerSum) {
-//                    System.out.println("Dealer win!");
-//                    break;
-//                } else {
-//                    System.out.println("Player win!");
-//                    break;
-//                }
-//            } else {
-//                System.out.println("Dealer bust!");
-//                System.out.println("Player win!");
-//            }
-//        }
-//
     }
 
     public int checkValue(PlayingCard card) {
@@ -262,7 +220,7 @@ public class PlayingCardGame {
 
         switch(menuSelected) {
             case 1:
-                playGameMenu();
+                onePlayerGame();
                 break;
             case 2:
                 showRules();
@@ -275,25 +233,25 @@ public class PlayingCardGame {
         }
     }
 
-    public void playGameMenu () {
-        System.out.println("Välj antal spelare:");
-        System.out.println("1. Spelare");
-        System.out.println("2. Spelare");
-
-        Scanner sc = new Scanner(System.in);
-        int menuInput = sc.nextInt();
-
-        if (menuInput == 1) {
-            onePlayerGame();
-        } else if (menuInput == 2){
-            twoPlayerGame();
-        } else {
-            System.exit(1);
-        }
-    }
+//    public void playGameMenu () {
+//        System.out.println("--VÄLJ ANTAL SPELARE--");
+//        System.out.println("1. Spelare");
+//        System.out.println("2. Spelare");
+//
+//        Scanner sc = new Scanner(System.in);
+//        int menuInput = sc.nextInt();
+//
+//        if (menuInput == 1) {
+//            onePlayerGame();
+//        } else if (menuInput == 2){
+//            twoPlayerGame();
+//        } else {
+//            System.exit(1);
+//        }
+//    }
 
     public void showRules() {
-        System.out.println("--Regler--");
+        System.out.println("--REGLER--");
         System.out.println("Spelet går ut på att gissa om det kort som du fått tilldelat");
         System.out.println("är högre eller lägre än dealerns kort.");
         System.out.println();
@@ -311,7 +269,8 @@ public class PlayingCardGame {
     }
 
     public void showStatistics () {
-        System.out.println("Statistics.......");
+        System.out.println("--STATISTIK--");
+        loadScore();
         System.out.println();
         System.out.println("Skriv 1 och ENTER för att återgå till huvudmenyn");
 
